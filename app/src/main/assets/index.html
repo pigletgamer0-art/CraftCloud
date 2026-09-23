@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0B1220"/><title>CraftCloud</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#f3f8ff;background:#0b1220}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 92% -3%,#153858,#0b1220 41%) fixed;font-size:15px}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:13px;padding:12px 16px;font-weight:700}
+button:disabled{cursor:not-allowed;opacity:.45}.primary{background:#38bdf8;color:#061321}.success{background:#4ade80;color:#061b11}
+.ghost{background:#172739;color:#e6f3fe;border:1px solid #35516c}.danger{background:#472632;color:#fecdd3}
+.wrap{max-width:800px;margin:auto;padding:20px 17px 88px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:850;font-size:24px;letter-spacing:-1px}.brand em{color:#38bdf8;font-style:normal}
+.logo{width:47px;height:47px;border:1px solid #3e6d94;border-radius:14px;background:#14273d;display:grid;place-items:center;font-size:30px}
+.muted,.small{color:#aec2d5}.small{font-size:12px}h1{font-size:30px;margin:24px 0 5px}h2{font-size:21px;margin:0 0 14px}h3{margin:0 0 8px}
+.topbadge{color:#4ade80;font-size:11px;border:1px solid #315741;padding:6px 8px;border-radius:30px}
+.tabs{display:flex;gap:6px;margin:22px 0 18px;overflow-x:auto}.tab{background:#182b40;color:#a9c0d6;white-space:nowrap}
+.tab.active{background:#38bdf8;color:#041724}.panel{background:#112235;border:1px solid #294761;border-radius:20px;padding:17px;margin:14px 0;box-shadow:0 9px 30px #01081422}
+.hidden{display:none!important}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.actions button{flex:1}
+label{display:block;font-size:13px;color:#bdcee1;margin:13px 0 7px;font-weight:650}
+input,select{display:block;width:100%;background:#0a1828;border:1px solid #385672;border-radius:12px;padding:13px;color:#fff;min-width:0}
+input[type=file]{padding:11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.note{border-left:3px solid #38bdf8;background:#162d40;border-radius:9px;padding:12px 13px;color:#cee1ee;font-size:13px;line-height:1.5}
+.warn{border-left-color:#fbbf24}.success-text{color:#4ade80}.server{display:grid;gap:12px}.server .row{align-items:flex-start}
+.tag{display:inline-block;color:#fbbf24;border:1px solid #805b20;border-radius:20px;padding:5px 9px;font-size:11px;white-space:nowrap}
+.pill{color:#91c4e8;background:#152f46;border-radius:20px;padding:5px 9px;font-size:12px}
+.item{border:1px solid #2d4b63;border-radius:12px;background:#0c1d2e;padding:12px;margin:9px 0}
+.item p{margin:6px 0;color:#b6c9d9;font-size:13px}.item .actions button{padding:8px}
+a{color:#7dd3fc;text-decoration:none}.status{min-height:24px;color:#b9def8;font-size:13px}
+.footer{text-align:center;padding:26px 5px;color:#7f9ab0;font-size:12px}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.wrap{padding-left:12px;padding-right:12px}.brand{font-size:21px}button{padding:10px}}
+</style></head><body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo" aria-hidden="true">☁️</div><span>Craft<em>Cloud</em></span></div><span class="topbadge">Vista de prueba</span></header>
+<div class="muted small">Grandes mundos comienzan aquí.</div>
+<nav class="tabs" aria-label="Navegación">
+<button type="button" class="tab active" data-tab="servers">Mis servidores</button>
+<button type="button" class="tab" data-tab="mods">Mods y packs</button>
+<button type="button" class="tab" data-tab="account">Mi cuenta</button>
+</nav>
+<section id="serversPage">
+<div class="row"><div><h1>Mis servidores<span style="color:#38bdf8">.</span></h1><p class="muted" style="margin:0">Crea y configura tus perfiles.</p></div><button id="addServer" class="primary">+ Crear</button></div>
+<div id="serverList"></div>
+<div class="note">Los servidores de esta versión son <b>perfiles locales</b>. No existe un alojamiento en la nube conectado. Encender, ver jugadores reales y crear un mundo en Internet siguen pendientes.</div>
+<section id="editor" class="panel hidden"><div class="row"><h2 id="editorTitle">Crear servidor</h2><button id="closeEditor" class="ghost">Cerrar</button></div>
+<form id="serverForm">
+<label for="serverName">Nombre del servidor</label><input id="serverName" maxlength="45" required placeholder="AlonsoCraft"/>
+<div class="grid"><div><label for="edition">Edición</label><select id="edition"><option value="bedrock">Bedrock</option><option value="java">Java</option><option value="cross">Java + Bedrock</option></select></div>
+<div><label for="mode">Modo predeterminado</label><select id="mode"><option value="survival">Survival</option><option value="creative">Creativo</option><option value="adventure">Aventura</option></select></div>
+<div><label for="difficulty">Dificultad</label><select id="difficulty"><option value="normal">Normal</option><option value="peaceful">Pacífico</option><option value="easy">Fácil</option><option value="hard">Difícil</option></select></div>
+<div><label for="players">Máximo de jugadores</label><input id="players" type="number" min="1" max="100" value="10" required/></div>
+<div><label for="privacy">Privacidad</label><select id="privacy"><option value="private">Privado</option><option value="public">Público</option><option value="invite">Por invitación</option></select></div>
+<div><label for="owner">Propietario (alias local)</label><input id="owner" maxlength="45" placeholder="Tu nombre en CraftCloud"/></div></div>
+<button class="success" type="submit" style="width:100%;margin-top:20px">Guardar perfil</button>
+</form></section>
+<section id="details" class="panel hidden"><div class="row"><h2 id="detailsName">Servidor</h2><button class="ghost" id="editCurrent">Editar</button></div>
+<div id="detailsStats" class="muted"></div>
+<div class="actions"><button class="success" disabled>Iniciar</button><button class="danger" disabled>Apagar</button><button class="ghost" disabled>Reiniciar</button></div>
+<p class="small">Los controles se habilitarán al conectar un alojamiento real.</p>
+<hr style="border:0;border-top:1px solid #2d465b;margin:18px 0"/><h3>Mi modo personal</h3>
+<p class="small">Guarda tu preferencia para este perfil. Aún no envía un comando a Minecraft.</p>
+<select id="personalMode"><option value="survival">Supervivencia</option><option value="creative">Creativo</option><option value="adventure">Aventura</option><option value="spectator">Espectador</option></select>
+<div class="actions"><button id="savePersonalMode" class="ghost">Guardar preferencia</button><button id="manageMods" class="primary">Administrar mods</button></div>
+<p class="small">La cuenta Microsoft, la asignación automática de OP y la lista de jugadores conectados aún no están implementadas.</p>
+<button id="deleteCurrent" class="danger">Eliminar perfil local</button>
+</section></section>
+<section id="modsPage" class="hidden">
+<h1>Mods y packs<span style="color:#4ade80">.</span></h1><p class="muted">Organiza complementos de cada servidor.</p>
+<div class="panel"><label for="modServer">Perfil de destino</label><select id="modServer"></select>
+<p id="modCompatibility" class="small"></p>
+<label for="modFiles">Seleccionar archivos de Android (varios a la vez)</label><input id="modFiles" type="file" multiple accept=".jar,.zip,.mcaddon,.mcpack"/>
+<button id="addFiles" class="success" style="margin-top:12px;width:100%">Agregar archivos al perfil</button>
+<div class="note warn" style="margin-top:14px">Se guardan solo nombres y tamaños; esta APK no sube los archivos ni instala mods en un servidor.</div><div id="modList"></div></div>
+<div class="panel"><h2>Catálogo de proyectos</h2><p class="small">Para servidores Java y cruzados, busca fichas de mods en Modrinth. Para Bedrock, explora el catálogo externo y selecciona después tus archivos.</p>
+<div id="javaCatalog"><label for="modQuery">Buscar en Modrinth</label><input id="modQuery" placeholder="Ej.: WorldEdit"/>
+<div class="grid"><div><label for="modVersion">Versión (opcional)</label><input id="modVersion" maxlength="24" placeholder="1.21.1"/></div>
+<div><label for="modLoader">Cargador</label><select id="modLoader"><option value="">Todos</option><option value="fabric">Fabric</option><option value="forge">Forge</option><option value="neoforge">NeoForge</option><option value="quilt">Quilt</option></select></div></div>
+<button class="primary" style="margin-top:12px;width:100%" id="findMods">Buscar mods</button><div id="modSearchStatus" class="status" role="status"></div><div id="modResults"></div></div>
+<div id="bedrockCatalog" class="hidden"><p class="small">El catálogo Bedrock se abre en el navegador. CraftCloud aún no dispone de integración de su API.</p>
+<a href="https://www.curseforge.com/minecraft-bedrock" target="_self">Explorar complementos Bedrock ↗</a></div></div></section>
+<section id="accountPage" class="hidden"><h1>Mi cuenta<span style="color:#38bdf8">.</span></h1>
+<div class="panel"><h2>Modo local</h2><div class="note">Microsoft, Google y cuentas CraftCloud todavía no están conectadas. No introduzcas aquí tu contraseña ni claves de API.</div>
+<p>Los perfiles se almacenan únicamente en este dispositivo y se pueden perder al desinstalar la APK.</p>
+<p class="small">Futuro: inicio de sesión seguro, vínculo con Xbox/Minecraft, propietario verificado y permisos por servidor.</p></div></section>
+<p class="footer">CraftCloud · v0.5 APK de prueba · Grandes mundos comienzan aquí.</p>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const key='craftcloud-previews-v05';
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const initial=()=>[{id:uid(),name:'AlonsoCraft',edition:'bedrock',mode:'survival',difficulty:'normal',players:10,privacy:'private',owner:'',personalMode:'survival',mods:[]}];
+let profiles;try{let raw=JSON.parse(localStorage.getItem(key));profiles=Array.isArray(raw)?raw:initial()}catch(e){profiles=initial()}
+let active=profiles[0]?.id||null,editId=null,catalogRequest=0;
+const selected=()=>profiles.find(p=>p.id===active);
+const save=()=>{localStorage.setItem(key,JSON.stringify(profiles));render()};
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const editionName=e=>({bedrock:'Bedrock',java:'Java',cross:'Java + Bedrock'}[e]||e);
+const allowed=(filename,edition)=>{let ext=String(filename).toLowerCase().split('.').pop();return edition==='bedrock'?['mcaddon','mcpack','zip'].includes(ext):['jar','zip'].includes(ext)};
+function tab(name){
+for(const b of document.querySelectorAll('[data-tab]'))b.classList.toggle('active',b.dataset.tab===name);
+for(const n of ['servers','mods','account'])$(n+'Page').classList.toggle('hidden',n!==name);
+if(name==='mods')renderMods();
+}
+for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>tab(b.dataset.tab));
+function render(){
+$('serverList').replaceChildren();
+for(const p of profiles){
+const card=document.createElement('div');card.className='panel server';
+const title=document.createElement('div');title.className='row';
+const info=document.createElement('div');
+const h=document.createElement('h3');h.textContent=p.name;
+const s=document.createElement('div');s.className='small';s.textContent=editionName(p.edition)+' · '+p.mode+' · '+p.players+' plazas';
+info.append(h,s);
+const label=document.createElement('span');label.className='pill';label.textContent='Perfil local';
+title.append(info,label);card.append(title);
+const act=document.createElement('div');act.className='actions';
+const manage=document.createElement('button');manage.className='primary';manage.textContent='Administrar';
+manage.addEventListener('click',()=>{active=p.id;$('editor').classList.add('hidden');showDetails();});
+const mods=document.createElement('button');mods.className='ghost';mods.textContent='Mods ('+(p.mods||[]).length+')';
+mods.addEventListener('click',()=>{active=p.id;tab('mods');});
+act.append(manage,mods);card.append(act);$('serverList').append(card);
+}
+if(!profiles.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='No tienes perfiles. Pulsa «+ Crear» para agregar uno.';$('serverList').append(empty);}
+const was=active;
+$('modServer').replaceChildren();
+for(const p of profiles){const o=new Option(p.name,p.id);$('modServer').append(o);}
+if(profiles.some(p=>p.id===was))$('modServer').value=was;else active=profiles[0]?.id||null;
+if(!selected())$('details').classList.add('hidden');
+}
+function formOpen(p){
+editId=p?.id||null;
+$('editorTitle').textContent=p?'Editar servidor':'Crear servidor';
+$('serverName').value=p?.name||'';
+$('edition').value=p?.edition||'bedrock';
+$('mode').value=p?.mode||'survival';
+$('difficulty').value=p?.difficulty||'normal';
+$('players').value=p?.players||10;
+$('privacy').value=p?.privacy||'private';
+$('owner').value=p?.owner||'';
+$('editor').classList.remove('hidden');
+$('details').classList.add('hidden');
+$('serverName').focus();
+}
+$('addServer').onclick=()=>formOpen(null);
+$('closeEditor').onclick=()=>$('editor').classList.add('hidden');
+$('serverForm').onsubmit=e=>{
+e.preventDefault();const name=$('serverName').value.trim();if(!name)return;
+const existing=profiles.find(p=>p.id===editId);
+const data={id:existing?.id||uid(),name,edition:$('edition').value,mode:$('mode').value,difficulty:$('difficulty').value,players:Math.min(100,Math.max(1,Number($('players').value)||10)),privacy:$('privacy').value,owner:$('owner').value.trim(),personalMode:existing?.personalMode||'survival',mods:existing?.mods||[]};
+if(existing)Object.assign(existing,data);else profiles.unshift(data);
+active=data.id;$('editor').classList.add('hidden');save();showDetails();
+};
+function showDetails(){
+const p=selected();if(!p)return;$('details').classList.remove('hidden');
+$('detailsName').textContent=p.name;$('detailsStats').textContent=editionName(p.edition)+' · '+p.mode+' · '+p.privacy+' · '+p.players+' plazas · Sin conexión real';
+$('personalMode').value=p.personalMode||'survival';$('details').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('editCurrent').onclick=()=>formOpen(selected());
+$('deleteCurrent').onclick=()=>{
+const p=selected();if(!p||!confirm('¿Eliminar el perfil local «'+p.name+'»?'))return;
+profiles=profiles.filter(x=>x.id!==p.id);active=profiles[0]?.id||null;$('details').classList.add('hidden');save();
+};
+$('savePersonalMode').onclick=()=>{const p=selected();if(!p)return;p.personalMode=$('personalMode').value;save();alert('Preferencia guardada solo en este teléfono. No se cambió ningún jugador real.');};
+$('manageMods').onclick=()=>tab('mods');
+$('modServer').onchange=()=>{active=$('modServer').value;renderMods()};
+function renderMods(){
+const p=selected();$('modList').replaceChildren();$('modResults').replaceChildren();
+$('modCompatibility').textContent=p?editionName(p.edition)+(p.edition==='bedrock'?' · .mcaddon, .mcpack, .zip':' · .jar, .zip (según cargador y versión)'):'Primero crea un perfil.';
+$('javaCatalog').classList.toggle('hidden',!p||p.edition==='bedrock');
+$('bedrockCatalog').classList.toggle('hidden',!p||p.edition!=='bedrock');
+$('addFiles').disabled=!p;$('findMods').disabled=!p;
+if(!p)return;
+for(const [idx,m] of (p.mods||[]).entries()){
+const item=document.createElement('div');item.className='item';
+const head=document.createElement('b');head.textContent=m.name;
+const sub=document.createElement('p');sub.textContent=m.source==='modrinth'?'Ficha del catálogo · No instalado':'Archivo seleccionado · '+Math.round((m.size||0)/1024)+' KB · No subido';
+const remove=document.createElement('button');remove.className='ghost';remove.textContent='Quitar';
+remove.onclick=()=>{p.mods.splice(idx,1);save();renderMods()};
+item.append(head,sub,remove);$('modList').append(item);
+}
+}
+$('addFiles').onclick=()=>{
+const p=selected();if(!p)return;
+const files=Array.from($('modFiles').files||[]);let added=0,skipped=0;
+for(const f of files){
+if(!allowed(f.name,p.edition)||p.mods.some(m=>m.name.toLowerCase()===f.name.toLowerCase())){skipped++;continue;}
+p.mods.push({name:f.name,size:f.size,source:'local'});added++;
+}
+$('modFiles').value='';save();renderMods();alert(added+' archivos registrados; '+skipped+' omitidos. Solo se conservaron sus datos, no sus bytes.');
+};
+$('findMods').onclick=()=>{
+const p=selected();if(!p||p.edition==='bedrock')return;
+const q=$('modQuery').value.trim();if(q.length<2)return $('modSearchStatus').textContent='Escribe al menos 2 caracteres.';
+$('modSearchStatus').textContent='Buscando en Modrinth...';$('modResults').replaceChildren();
+const req=++catalogRequest;
+if(!window.CraftCloudNative?.searchMods){$('modSearchStatus').textContent='La búsqueda integrada funciona en la APK Android.';return;}
+window.CraftCloudNative.searchMods(q,$('modVersion').value.trim(),$('modLoader').value,req);
+};
+window.onCatalogReply=raw=>{
+let data;try{data=JSON.parse(raw)}catch(e){return}if(data.requestId!==catalogRequest)return;
+const p=selected();if(!p||p.edition==='bedrock')return;
+$('modSearchStatus').textContent=data.error?'Error: '+data.error:(data.items||[]).length+' proyectos encontrados. Solo se guardarán fichas, no archivos.';
+for(const hit of data.items||[]){
+if(!hit.id||!hit.name)continue;
+const item=document.createElement('div');item.className='item';
+const title=document.createElement('b');title.textContent=hit.name;
+const desc=document.createElement('p');desc.textContent=hit.description.slice(0,180);
+const acts=document.createElement('div');acts.className='actions';
+const add=document.createElement('button');add.className='success';add.textContent='Guardar ficha';
+add.onclick=()=>{if(!p.mods.some(m=>m.projectId===hit.id)){p.mods.push({name:hit.name,projectId:hit.id,size:0,source:'modrinth'});save();renderMods();}};
+const link=document.createElement('a');link.textContent='Ver proyecto ↗';link.href='https://modrinth.com/mod/'+encodeURIComponent(hit.id);link.style.alignSelf='center';
+acts.append(add,link);item.append(title,desc,acts);$('modResults').append(item);
+}
+};
+render();
+</script></body></html>
