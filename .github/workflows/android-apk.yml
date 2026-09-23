@@ -14,12 +14,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - name: Instalar Android SDK 35
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Preparar Android SDK
+        shell: bash
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}" >> "$GITHUB_ENV"
+          SDKMANAGER="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -type f -name sdkmanager -print -quit)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0"
       - name: Compilar aplicación de prueba
         run: gradle --no-daemon --stacktrace assembleDebug
       - name: Publicar APK
