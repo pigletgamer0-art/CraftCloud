@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10151f">
+<title>CraftCloud — Panel de servidores</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1018;--panel:#121a26;--panel2:#172231;--line:#263448;--text:#edf3fb;--muted:#9aabc0;--blue:#66a8ff;--green:#55d6a0;--yellow:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -20%,#203a5a 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--text);background:#202d3f;font-weight:650}button:hover{filter:brightness(1.13)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.primary{background:var(--blue);border-color:var(--blue);color:#071321}.quiet{background:transparent}.danger{border-color:#70414b;background:#3a2029}.shell{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}.sidebar{padding:24px 16px;border-right:1px solid var(--line);background:#0e141e}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px;margin:0 8px 34px}.mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#6db8ff,#6fe0bb);color:#081522;font-size:20px}.nav{display:grid;gap:7px}.nav button{display:flex;gap:12px;align-items:center;text-align:left;background:transparent;border-color:transparent;color:var(--muted);font-weight:550}.nav button.active,.nav button:hover{background:#1a2636;color:var(--text)}.side-note{margin:34px 8px 0;color:var(--muted);font-size:12px}.main{padding:30px clamp(18px,4vw,48px);max-width:1450px;width:100%;margin:0 auto}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:28px}.eyebrow{color:var(--blue);font-weight:750;letter-spacing:.11em;text-transform:uppercase;font-size:11px}h1{font-size:clamp(26px,3vw,36px);line-height:1.15;margin:7px 0}h2{font-size:18px;margin:0 0 14px}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}.dot{width:7px;height:7px;border-radius:50%;background:var(--yellow)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}.card{background:linear-gradient(180deg,#151f2d,#111923);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0}.stat{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-top:7px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:28px 0 14px}.server{display:flex;align-items:center;justify-content:space-between;gap:20px}.server-title{display:flex;align-items:center;gap:13px}.server-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:13px;background:#23354a;font-size:23px}.server h3{font-size:16px;margin:0 0 3px}.actions{display:flex;gap:8px;flex-wrap:wrap}.notice{border:1px solid #67532c;background:#2a2418;color:#f4dfae;border-radius:12px;padding:13px 15px;margin:18px 0}.terminal{background:#070b11;border:1px solid #27364a;border-radius:12px;padding:15px;font:12px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;color:#a9c6e6;min-height:95px;white-space:pre-wrap}.formrow{display:flex;gap:10px;flex-wrap:wrap}.formrow input,.formrow select{background:#0b111a;border:1px solid var(--line);border-radius:10px;padding:11px;color:var(--text);min-width:0}.formrow input{flex:1;min-width:160px}.formrow select{min-width:170px}.small{font-size:12px}.footer{margin-top:24px;color:var(--muted);font-size:12px}.mobile-menu{display:none}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{padding:13px 16px;border-right:0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.brand{margin:0}.nav{display:flex;gap:4px}.nav button{font-size:12px;padding:8px}.side-note{display:none}.main{padding-top:24px}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.sidebar{align-items:flex-start;gap:12px;flex-direction:column}.nav{width:100%;overflow:auto}.nav button{white-space:nowrap}.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.server{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><span class="mark">◇</span><span>CraftCloud</span></div>
+  <nav class="nav" aria-label="Navegación principal">
+    <button class="active" data-view="overview">▦ <span>Resumen</span></button>
+    <button data-view="servers">▣ <span>Servidores</span></button>
+    <button data-view="settings">⚙ <span>Configuración</span></button>
+  </nav>
+  <div class="side-note">Panel inicial · Vista previa</div>
+</aside>
+<main class="main">
+  <header class="top">
+    <div><div class="eyebrow">Centro de control</div><h1 id="page-title">Tu espacio de servidores</h1><div class="muted">Administra tus mundos desde un único lugar.</div></div>
+    <span class="pill"><span class="dot"></span> Backend aún no conectado</span>
+  </header>
+  <div class="notice"><strong>Modo de vista previa:</strong> esta interfaz ya funciona en el navegador, pero todavía no crea servidores reales. La integración segura con el motor de hosting es el siguiente paso.</div>
+  <section class="grid" aria-label="Resumen">
+    <article class="card"><div class="muted">Servidores registrados</div><div class="stat" id="stat-servers">0</div><div class="muted small">En este navegador</div></article>
+    <article class="card"><div class="muted">En ejecución</div><div class="stat">0</div><div class="muted small">Sin motor conectado</div></article>
+    <article class="card"><div class="muted">Tipo de proyecto</div><div class="stat" style="font-size:22px">Bedrock</div><div class="muted small">Objetivo inicial · Vanilla</div></article>
+  </section>
+  <div class="section-head"><h2>Mis servidores</h2><button class="primary" id="new-server">＋ Crear servidor</button></div>
+  <section id="server-list" class="card">
+    <div class="server">
+      <div class="server-title"><div class="server-icon">⛏</div><div><h3>Aún no hay servidores</h3><div class="muted small">Crea un registro para preparar la configuración.</div></div></div>
+    </div>
+  </section>
+  <section id="create-panel" class="card" hidden style="margin-top:15px">
+    <h2>Preparar servidor</h2>
+    <p class="muted small">Esto guarda una configuración de demostración local. No reserva recursos ni inicia un servidor real.</p>
+    <form id="create-form" class="formrow">
+      <input id="server-name" maxlength="32" placeholder="Nombre del servidor" aria-label="Nombre del servidor" required>
+      <select id="server-software" aria-label="Software"><option value="Bedrock Vanilla">Bedrock Vanilla</option></select>
+      <button class="primary" type="submit">Guardar configuración</button><button type="button" id="cancel-create" class="quiet">Cancelar</button>
+    </form>
+  </section>
+  <section class="section-head"><h2>Registro de actividad</h2></section>
+  <div class="terminal" id="logs" role="log" aria-live="polite">[CraftCloud] Interfaz cargada.
+[Estado] Backend no conectado; no se ha iniciado ningún proceso de Minecraft.</div>
+  <div class="footer">CraftCloud · Prototipo web inicial. No introduzcas contraseñas, tokens ni datos sensibles en esta vista previa.</div>
+</main>
+</div>
+<script>
+(() => {
+ const $=id=>document.getElementById(id); const storageKey='craftcloud-preview-servers-v1';
+ let servers=[]; try{servers=JSON.parse(localStorage.getItem(storageKey)||'[]');if(!Array.isArray(servers))servers=[];}catch{servers=[];}
+ function log(msg){$('logs').textContent+='\n'+new Date().toLocaleTimeString()+' '+msg;$('logs').scrollTop=$('logs').scrollHeight;}
+ function render(){
+  $('stat-servers').textContent=servers.length;
+  const list=$('server-list');
+  if(!servers.length){list.innerHTML='<div class="server"><div class="server-title"><div class="server-icon">⛏</div><div><h3>Aún no hay servidores</h3><div class="muted small">Crea un registro para preparar la configuración.</div></div></div></div>';return;}
+  list.innerHTML=servers.map((s,i)=>'<div class="server" style="padding:4px 0 14px;'+(i?'border-top:1px solid var(--line);padding-top:15px':'')+'"><div class="server-title"><div class="server-icon">⛏</div><div><h3>'+escapeHtml(s.name)+'</h3><div class="muted small">'+escapeHtml(s.software)+' · Configuración local · Sin iniciar</div></div></div><div class="actions"><button data-action="details" data-id="'+s.id+'">Ver ajustes</button><button class="danger" data-action="delete" data-id="'+s.id+'">Eliminar</button></div></div>').join('');
+ }
+ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function save(){try{localStorage.setItem(storageKey,JSON.stringify(servers));}catch{log('[Error] No se pudo guardar localmente.');}render();}
+ $('new-server').addEventListener('click',()=>{$('create-panel').hidden=false;$('server-name').focus();});
+ $('cancel-create').addEventListener('click',()=>{$('create-panel').hidden=true;});
+ $('create-form').addEventListener('submit',e=>{e.preventDefault();const name=$('server-name').value.trim();if(!name)return;if(servers.some(s=>s.name.toLowerCase()===name.toLowerCase())){log('[Validación] Ya existe un registro con ese nombre.');return;}servers.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name,software:$('server-software').value});save();$('server-name').value='';$('create-panel').hidden=true;log('[Vista previa] Se guardó la configuración local de "'+name+'". No se inició un servidor real.');});
+ $('server-list').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const s=servers.find(x=>x.id===b.dataset.id);if(!s)return;if(b.dataset.action==='delete'&&confirm('¿Eliminar el registro local "'+s.name+'"?')){servers=servers.filter(x=>x.id!==s.id);save();log('[Vista previa] Registro eliminado: '+s.name);}else if(b.dataset.action==='details'){alert('Nombre: '+s.name+'\nSoftware: '+s.software+'\nEstado: sin iniciar\n\nEl backend de hosting aún debe implementarse para ejecutar Minecraft.');}});
+ document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x===b));$('page-title').textContent=({'overview':'Tu espacio de servidores','servers':'Mis servidores','settings':'Configuración'})[b.dataset.view];if(b.dataset.view==='settings')log('[Info] La configuración global estará disponible al conectar el backend.');}));
+ render();
+})();
+</script>
+</body>
+</html>
